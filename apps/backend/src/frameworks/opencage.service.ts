@@ -1,6 +1,9 @@
+import { Injectable } from '@nestjs/common';
 import * as https from 'https';
+import { GeolocationService } from 'src/geolocation/geolocation.service';
 
-export class OpenCageService {
+@Injectable()
+export class OpenCageService extends GeolocationService {
   async reverseGeocoding(latitude: string, longitude: string): Promise<any> {
     if (!latitude || !longitude) {
       throw new Error('Latitude and longitude must be provided.');
