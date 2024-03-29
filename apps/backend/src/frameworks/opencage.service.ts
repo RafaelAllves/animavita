@@ -19,19 +19,10 @@ export class OpenCageService {
         response.on('end', () => {
           const parsedData = JSON.parse(data);
           if (parsedData && parsedData.results) {
-            resolve(parsedData.results.map(address => {
-              if (address.components.continent == "Europe") {
-                return {
-                  region: address.components.municipality,
-                  subregion: address.components.county,
-                }
-              } else {
-                return {
-                  region: address.components.city,
-                  subregion: address.components.state,
-                }
-              }
-            }));
+            resolve(parsedData.results.map(address => ({
+              region: address.components.city || address.components.municipality,
+              subregion: address.components.state ||address.components.county,
+            })));
           } else {
             reject(new Error('Failed to parse response data.'));
           }
