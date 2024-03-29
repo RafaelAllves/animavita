@@ -21,7 +21,19 @@ export class OpencageController {
 
         response.on('end', () => {
 
-          resolve(JSON.parse(data)?.results.map(address => ({region: address.components.city, subregion: address.components.state})));
+          resolve(JSON.parse(data)?.results.map(address => {
+            if (address.components.continent == "Europe") {
+              return {
+                region: address.components.municipality,
+                subregion: address.components.county,
+              }
+            } else {
+              return {
+                region: address.components.city,
+                subregion: address.components.state,
+              }
+            }
+          }));
         });
       }).on('error', (error) => {
         reject(error);
